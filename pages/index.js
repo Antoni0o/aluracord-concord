@@ -1,11 +1,35 @@
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
+
 import { Box, Button, Text, TextField, Image } from '@skynexui/components';
-import GlobalStyle from '../styles/GlobalStyle';
-import appConfig from '../config.json';
 import Title from '../components/Title';
+import appConfig from '../config.json';
 
 export default function PaginaInicial() {
+  const [username, setUsername] = useState('');
+  const [user, setUser] = useState('');
+  const [background, setBackground] = useState('');
+  const router = useRouter(); 
 
-  const sortRandomBackgroundURL = () => {
+  useEffect(() => {
+    if(username.length >= 2) {
+      fetch(`https://api.github.com/users/${username}`)
+      .then(async (res) => {
+        return await res.json();
+      })
+      .then((res) => {
+        setUser(res);
+        if(!res.avatar_url) {
+          const user = {
+            avatar_url: 'https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg'
+          }
+          setUser(user)
+        }
+      })
+    }
+  }, [username]);
+
+  useEffect(() => {
     const URLs = [
       "https://i0.wp.com/www.toppapeldeparede.com.br/wp-content/uploads/2021/04/50-Minimalist-Desktop-Wallpapers-and.png?fit=1200%2C675&ssl=1",
       "https://wallpaperaccess.com/full/84248.png",
@@ -20,19 +44,17 @@ export default function PaginaInicial() {
     
     const randomNumber = Math.floor(Math.random() * URLs.length) - 1;
 
-    return URLs[randomNumber < 0 ? randomNumber + 1 : randomNumber];
-  }
-
-
-  const username = 'antoni0o';
+    if(!background){
+      setBackground(URLs[randomNumber < 0 ? randomNumber + 1 : randomNumber]);
+    }
+  }, [background]);
 
   return (
     <>
-      <GlobalStyle />
       <Box
         styleSheet={{
           display: 'flex', alignItems: 'center', justifyContent: 'center',
-          backgroundImage: `url(${sortRandomBackgroundURL()})`,
+          backgroundImage: `url(${background})`,
           backgroundRepeat: 'no-repeat', backgroundSize: 'cover', backgroundBlendMode: 'multiply',
         }}
       >
@@ -58,6 +80,12 @@ export default function PaginaInicial() {
               display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
               width: { xs: '100%', sm: '50%' }, textAlign: 'center', marginBottom: '16px',
             }}
+            onSubmit={(e) => {
+              e.preventDefault();
+              if(user.id) {
+                router.push('/chat');
+              }
+            }}
           >
             <Title tag="h2">Boas vindas de volta!</Title>
             <Text variant="body3" styleSheet={{ marginBottom: '32px', color: appConfig.theme.colors.neutrals[300], fontSize: '16px' }}>
@@ -71,16 +99,19 @@ export default function PaginaInicial() {
                   mainColor: appConfig.theme.colors.neutrals[900],
                   mainColorHighlight: appConfig.theme.colors.neutrals['500'],
                   backgroundColor: appConfig.theme.colors.neutrals[800],
-                },
+                }
               }}
               fullWidth
               hasLabel={false}
               label="Label"
-              onChange={function noRefCheck(){}}
-              onKeyPress={function noRefCheck(){}}
               rounded="none"
               size="lg"
-              value=""
+              value={username}
+              onChange={(e) => {
+                e.preventDefault();
+                const { value } = e.target;
+                setUsername(value);
+              }}
             />
             <Button
               buttonColors={{
@@ -97,7 +128,7 @@ export default function PaginaInicial() {
               variant="secondary"
               styleSheet={{
                 color: appConfig.theme.colors.neutrals["000"],
-                borderSize: '2px'
+                border: '3px solid'
               }}
             />
           </Box>
@@ -116,7 +147,8 @@ export default function PaginaInicial() {
               border: '1px solid',
               borderColor: appConfig.theme.colors.neutrals[900],
               flex: 1,
-              minHeight: '260px',
+              minHeight: '340px',
+              maxHeight: '340px'
             }}
           >
             <Image
@@ -125,19 +157,23 @@ export default function PaginaInicial() {
                 borderRadius: '50%',
                 marginBottom: '16px',
               }}
-              src={`https://github.com/${username}.png`}
+              src={username === "" || username.length <= 2 ? "https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg" : user.avatar_url}
             />
-            <Text
+            {username &&
+              <Text
               variant="body4"
               styleSheet={{
                 color: appConfig.theme.colors.neutrals[200],
                 backgroundColor: appConfig.theme.colors.neutrals[900],
                 padding: '6px 16px',
-                fontSize: '16px'
+                fontSize: '16px',
+                minHeight: '32px',
+                maxHeight: '32px'
               }}
-            >
-              {username}
-            </Text>
+              >
+                {username}
+              </Text>
+            }
           </Box>
           {/* Photo Area */}
         </Box>
