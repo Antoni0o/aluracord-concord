@@ -4,8 +4,9 @@ import { useRouter } from 'next/router';
 import { Box, Button, Text, TextField, Image } from '@skynexui/components';
 import Title from '../components/Title';
 import appConfig from '../config.json';
+import GetRandomNumber from '../components/GetRandomNumber';
 
-export default function PaginaInicial() {
+export default function HomePage() {
   const [username, setUsername] = useState('');
   const [user, setUser] = useState('');
   const [background, setBackground] = useState('');
@@ -30,22 +31,8 @@ export default function PaginaInicial() {
   }, [username]);
 
   useEffect(() => {
-    const URLs = [
-      "https://i0.wp.com/www.toppapeldeparede.com.br/wp-content/uploads/2021/04/50-Minimalist-Desktop-Wallpapers-and.png?fit=1200%2C675&ssl=1",
-      "https://wallpaperaccess.com/full/84248.png",
-      "https://www.pixel4k.com/wp-content/uploads/2019/03/scenery-digital-art-4k_1551642030.jpg",
-      "https://images.hdqwalls.com/download/my-secret-alone-time-sea-shore-clouds-silence-digital-art-4k-5l-3840x2400.jpg",
-      "https://wallpaperaccess.com/full/1127017.jpg",
-      "https://images.hdqwalls.com/wallpapers/sky-blue-clouds-digital-art-4k-pc.jpg",
-      "https://wallpaperaccess.com/full/3997508.jpg",
-      "https://cdn.wallpapersafari.com/86/45/fv3WCq.jpg",
-      "https://images.wallpapersden.com/image/download/cyrodiil-pixel-art_a2loameUmZqaraWkpJRobWllrWdma2U.jpg"
-    ];
-    
-    const randomNumber = Math.floor(Math.random() * URLs.length) - 1;
-
     if(!background){
-      setBackground(URLs[randomNumber < 0 ? randomNumber + 1 : randomNumber]);
+      setBackground(GetRandomNumber());
     }
   }, [background]);
 
@@ -69,6 +56,7 @@ export default function PaginaInicial() {
             },
             width: '100%', maxWidth: '750px',
             padding: '32px', margin: '16px',
+            borderRadius: '5px',
             boxShadow: '0 2px 10px 0 rgb(0 0 0 / 20%)',
             backgroundColor: appConfig.theme.colors.neutrals[700],
           }}
@@ -104,7 +92,7 @@ export default function PaginaInicial() {
               fullWidth
               hasLabel={false}
               label="Label"
-              rounded="none"
+              rounded="sm"
               size="lg"
               value={username}
               onChange={(e) => {
@@ -122,7 +110,7 @@ export default function PaginaInicial() {
               }}
               fullWidth
               label="Entrar"
-              rounded="none"
+              rounded="sm"
               size="xl"
               type="submit"
               variant="secondary"
@@ -141,6 +129,7 @@ export default function PaginaInicial() {
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
+              borderRadius: '5px',
               maxWidth: '300px',
               padding: '32px',
               backgroundColor: appConfig.theme.colors.neutrals[800],
@@ -165,6 +154,7 @@ export default function PaginaInicial() {
               styleSheet={{
                 color: appConfig.theme.colors.neutrals[200],
                 backgroundColor: appConfig.theme.colors.neutrals[900],
+                borderRadius: '5px',
                 padding: '6px 16px',
                 fontSize: '16px',
                 minHeight: '32px',
