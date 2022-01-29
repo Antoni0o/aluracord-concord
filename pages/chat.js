@@ -1,9 +1,14 @@
 import { Box, Text, TextField, Image, Button } from '@skynexui/components';
 import { useEffect, useState } from 'react';
-import { HiTrash } from 'react-icons/hi'
+import { createClient } from '@supabase/supabase-js';
 
 import appConfig from '../config.json';
 import GetRandomNumber from '../components/GetRandomNumber';
+import MessageList from '../components/MessageList';
+
+const supabaseURL = 'https://cszipflqliivofbzdgjq.supabase.co';
+const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTY0MzM5Njc3NSwiZXhwIjoxOTU4OTcyNzc1fQ.QDuQm7rnpGUL2tU9VIC8XeTYiRIccnDc0ENhNCjb2dM';
+const supabaseClient = createClient(supabaseURL, supabaseAnonKey);
 
 export default function ChatPage() {
   const username = 'antoni0o';
@@ -17,19 +22,34 @@ export default function ChatPage() {
     }
   }, [background]);
 
+  useEffect(() => {
+    supabaseClient
+      .from('messages')
+      .select('*')
+      .order('id', {ascending: false})
+      .then(({data}) => {
+        setMessageList(data);
+      });
+  }, []);
+
   const newMessageHandle = (newMessage) => {
     const message = {
-      id: messageList.length + 1,
       sender: username,
       text: newMessage
     };
 
-    setMessageList([
-      message,
-      ...messageList
-    ]);
-
-    setMessage('');
+    supabaseClient
+      .from('messages')
+      .insert([
+        message
+      ])
+      .then(({data}) => {
+        setMessageList([
+          data[0],
+          ...messageList
+        ]);
+        setMessage('');
+      })
   }
 
   return (
@@ -152,93 +172,3 @@ function Header() {
   )
 }
 
-function MessageList(props) {
-  console.log('MessageList', props.messages);
-  return (
-    <Box
-      tag="ul"
-      className='chatBox'
-      styleSheet={{
-        overflowY: 'scroll',
-        display: 'flex',
-        flexDirection: 'column-reverse',
-        flex: 1,
-        color: appConfig.theme.colors.neutrals["000"],
-        marginBottom: '16px',
-      }}
-    >
-      {props.messages.map((message) => {
-        return (
-          <Text
-            key={message.id}
-            tag="li"
-            styleSheet={{
-              borderRadius: '5px',
-              padding: '6px',
-              marginBottom: '12px',
-              hover: {
-                backgroundColor: appConfig.theme.colors.neutrals[700],
-              }
-            }}
-          >
-            <Box
-              styleSheet={{
-                marginBottom: '8px',
-                display: 'flex',
-                alignItems: 'center'
-              }}
-            >
-              <Image
-                alt='Imagem do usuário'
-                styleSheet={{
-                  width: '20px',
-                  height: '20px',
-                  borderRadius: '50%',
-                  display: 'inline-block',
-                  marginRight: '8px',
-                }}
-                src={`https://github.com/${message.sender}.png`}
-              />
-              <Text tag="strong">
-                {message.sender}
-              </Text>
-              <Text
-                styleSheet={{
-                  fontSize: '10px',
-                  marginLeft: '8px',
-                  color: appConfig.theme.colors.neutrals[300],
-                }}
-                tag="span"
-              >
-                {(new Date().toLocaleDateString())}
-              </Text>
-              <Button
-                colorVariant="neutral"
-                label={<HiTrash/>}
-                styleSheet={{
-                  padding: '2px 4px',
-                  marginLeft: 'auto',
-                  marginRight: '2%'
-                }}
-                onClick={(e) => {
-                  props.messages.filter((message) => {
-                    
-                  })
-                }}
-              />
-            </Box>
-            <Text
-              className='messageText'
-              styleSheet={{
-                width: '700px',
-                wordBreak: 'break-all'
-              }}
-            >
-              {message.text}
-            </Text>
-          </Text>
-        );
-      })}
-    </Box>
-  )
-}
