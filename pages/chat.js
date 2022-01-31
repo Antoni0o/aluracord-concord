@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { Box, Text, TextField, Button } from '@skynexui/components';
 import Head from 'next/head';
-import React from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { createClient } from '@supabase/supabase-js';
 
@@ -15,13 +15,13 @@ const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbi
 const supabaseClient = createClient(supabaseURL, supabaseAnonKey);
 
 export default function ChatPage() {
-  const [background, setBackground] = React.useState('');
-  const [message, setMessage] = React.useState('');
-  const [messageList, setMessageList] = React.useState([]);
+  const [background, setBackground] = useState('');
+  const [message, setMessage] = useState('');
+  const [messageList, setMessageList] = useState([]);
   const router = useRouter();
   const { username } = router.query;
 
-  React.useEffect(() => {
+  useEffect(() => {
     supabaseClient
       .from('messages')
       .select('*')
@@ -48,7 +48,7 @@ export default function ChatPage() {
     }
   }, []);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!background) {
       setBackground(GetRandomNumber());
     }
