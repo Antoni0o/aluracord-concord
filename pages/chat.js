@@ -1,6 +1,7 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import { Box, Text, TextField, Button } from '@skynexui/components';
 import Head from 'next/head';
-import { useEffect, useState } from 'react';
+import React from 'react';
 import { useRouter } from 'next/router';
 import { createClient } from '@supabase/supabase-js';
 
@@ -8,25 +9,20 @@ import appConfig from '../config.json';
 import GetRandomNumber from '../components/GetRandomNumber';
 import MessageList from '../components/MessageList';
 import { SendStickerButton } from '../components/SendStickerButton';
+import Custom404 from './404';
 
 const supabaseURL = 'https://cszipflqliivofbzdgjq.supabase.co';
 const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTY0MzM5Njc3NSwiZXhwIjoxOTU4OTcyNzc1fQ.QDuQm7rnpGUL2tU9VIC8XeTYiRIccnDc0ENhNCjb2dM';
 const supabaseClient = createClient(supabaseURL, supabaseAnonKey);
 
 export default function ChatPage() {
-  const [background, setBackground] = useState('');
-  const [message, setMessage] = useState('');
-  const [messageList, setMessageList] = useState([]);
+  const [background, setBackground] = React.useState('');
+  const [message, setMessage] = React.useState('');
+  const [messageList, setMessageList] = React.useState([]);
   const router = useRouter();
   const { username } = router.query;
 
-  useEffect(() => {
-    if (!background) {
-      setBackground(GetRandomNumber());
-    }
-  }, [background]);
-
-  useEffect(() => {
+  React.useEffect(() => {
     supabaseClient
       .from('messages')
       .select('*')
@@ -52,6 +48,12 @@ export default function ChatPage() {
       subscription.unsubscribe();
     }
   }, []);
+
+  React.useEffect(() => {
+    if (!background) {
+      setBackground(GetRandomNumber());
+    }
+  }, [background]);
 
   const newMessageHandle = (newMessage) => {
     const message = {
