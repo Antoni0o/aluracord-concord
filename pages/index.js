@@ -5,6 +5,7 @@ import { Box, Button, Text, TextField, Image } from '@skynexui/components';
 import Title from '../components/Title';
 import appConfig from '../config.json';
 import GetRandomNumber from '../components/GetRandomNumber';
+import Head from 'next/head';
 
 export default function HomePage() {
   const [username, setUsername] = useState('');
@@ -38,6 +39,9 @@ export default function HomePage() {
 
   return (
     <>
+      <Head>
+        <title>Concord - Login</title>
+      </Head>
       <Box
         styleSheet={{
           display: 'flex', alignItems: 'center', justifyContent: 'center',

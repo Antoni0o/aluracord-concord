@@ -1,3 +1,4 @@
+import Head from "next/head";
 import { Box, Button, Text } from "@skynexui/components";
 import { useEffect, useState } from "react";
 
@@ -14,7 +15,11 @@ export default function Custom404() {
   }, [background]);
 
   return (
-    <Box
+    <>
+      <Head>
+        <title>Concord - Login</title>
+      </Head>
+      <Box
         styleSheet={{
           display: 'flex', alignItems: 'center', justifyContent: 'center',
           backgroundImage: `url(${background})`,
@@ -44,65 +49,66 @@ export default function Custom404() {
               variant="heading1"
               styleSheet={{
                 transition: '0.3s ease',
-                marginBottom: '32px', 
+                marginBottom: '32px',
                 color: appConfig.theme.colors.neutrals["000"],
                 fontSize: '128px',
                 hover: {
                   transition: '0.3s ease',
-                  color: appConfig.theme.colors.primary["500"], 
+                  color: appConfig.theme.colors.primary["500"],
                   cursor: 'default',
-                } 
+                }
               }}
             >4</Text>
             <Text
               variant="heading1"
               styleSheet={{
                 transition: '0.3s ease',
-                marginBottom: '32px', 
-                color: appConfig.theme.colors.primary["500"], 
+                marginBottom: '32px',
+                color: appConfig.theme.colors.primary["500"],
                 fontSize: '128px',
                 hover: {
                   transition: '0.3s ease',
                   cursor: 'default',
                   color: appConfig.theme.colors.neutrals["000"]
-                } 
+                }
               }}
             >0</Text>
             <Text
               variant="heading1"
               styleSheet={{
                 transition: '0.3s ease',
-                marginBottom: '32px', 
+                marginBottom: '32px',
                 color: appConfig.theme.colors.neutrals["000"],
                 fontSize: '128px',
                 hover: {
                   transition: '0.3s ease',
-                  color: appConfig.theme.colors.primary["500"], 
+                  color: appConfig.theme.colors.primary["500"],
                   cursor: 'default',
-                } 
+                }
               }}
             >4</Text>
 
           </Box>
-            <Button
-              buttonColors={{
-                contrastColor: appConfig.theme.colors.neutrals["000"],
-                mainColor: appConfig.theme.colors.primary[500],
-                mainColorLight: appConfig.theme.colors.primary[400],
-                mainColorStrong: appConfig.theme.colors.primary[600],
-              }}
-              label="Voltar"
-              rounded="full"
-              size="xl"
-              href="/"
-              variant="secondary"
-              styleSheet={{
-                color: appConfig.theme.colors.neutrals["000"],
-                border: '3px solid',
-                padding: '10px 40px'
-              }}
-            />
+          <Button
+            buttonColors={{
+              contrastColor: appConfig.theme.colors.neutrals["000"],
+              mainColor: appConfig.theme.colors.primary[500],
+              mainColorLight: appConfig.theme.colors.primary[400],
+              mainColorStrong: appConfig.theme.colors.primary[600],
+            }}
+            label="Voltar"
+            rounded="full"
+            size="xl"
+            href="/"
+            variant="secondary"
+            styleSheet={{
+              color: appConfig.theme.colors.neutrals["000"],
+              border: '3px solid',
+              padding: '10px 40px'
+            }}
+          />
         </Box>
       </Box>
+    </>
   )
 }
