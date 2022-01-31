@@ -4,8 +4,7 @@ import { createClient } from "@supabase/supabase-js";
 
 import useComponentVisibility from "./hooks/useComponentVisibility";
 import appConfig from '../config.json';
-import { useState } from "react/cjs/react.development";
-
+import { useState } from "react";
 
 const supabaseURL = 'https://cszipflqliivofbzdgjq.supabase.co';
 const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTY0MzM5Njc3NSwiZXhwIjoxOTU4OTcyNzc1fQ.QDuQm7rnpGUL2tU9VIC8XeTYiRIccnDc0ENhNCjb2dM';

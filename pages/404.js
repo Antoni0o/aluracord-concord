@@ -1,14 +1,14 @@
 import Head from "next/head";
 import { Box, Button, Text } from "@skynexui/components";
-import { useEffect, useState } from "react";
+import React from "react";
 
 import GetRandomNumber from "../components/GetRandomNumber";
 import appConfig from '../config.json';
 
 export default function Custom404() {
-  const [background, setBackground] = useState('');
+  const [background, setBackground] = React.useState('');
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (!background) {
       setBackground(GetRandomNumber());
     }
