@@ -9,7 +9,6 @@ import appConfig from '../config.json';
 import GetRandomNumber from '../components/GetRandomNumber';
 import MessageList from '../components/MessageList';
 import { SendStickerButton } from '../components/SendStickerButton';
-import Custom404 from './404';
 
 const supabaseURL = 'https://cszipflqliivofbzdgjq.supabase.co';
 const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTY0MzM5Njc3NSwiZXhwIjoxOTU4OTcyNzc1fQ.QDuQm7rnpGUL2tU9VIC8XeTYiRIccnDc0ENhNCjb2dM';

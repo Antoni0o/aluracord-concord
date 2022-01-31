@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React from 'react';
 import { useRouter } from 'next/router';
 
 import { Box, Button, Text, TextField, Image } from '@skynexui/components';
@@ -8,12 +8,12 @@ import GetRandomNumber from '../components/GetRandomNumber';
 import Head from 'next/head';
 
 export default function HomePage() {
-  const [username, setUsername] = useState('');
-  const [user, setUser] = useState('');
-  const [background, setBackground] = useState('');
+  const [username, setUsername] = React.useState('');
+  const [user, setUser] = React.useState('');
+  const [background, setBackground] = React.useState('');
   const router = useRouter(); 
 
-  useEffect(() => {
+  React.useEffect(() => {
     if(username.length >= 2) {
       fetch(`https://api.github.com/users/${username}`)
       .then(async (res) => {
@@ -31,7 +31,7 @@ export default function HomePage() {
     }
   }, [username]);
 
-  useEffect(() => {
+  React.useEffect(() => {
     if(!background){
       setBackground(GetRandomNumber());
     }
