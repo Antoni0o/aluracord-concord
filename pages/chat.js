@@ -1,20 +1,23 @@
 import { Box, Text, TextField, Image, Button } from '@skynexui/components';
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 import { createClient } from '@supabase/supabase-js';
 
 import appConfig from '../config.json';
 import GetRandomNumber from '../components/GetRandomNumber';
 import MessageList from '../components/MessageList';
+import { SendStickerButton } from '../components/SendStickerButton';
 
 const supabaseURL = 'https://cszipflqliivofbzdgjq.supabase.co';
 const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTY0MzM5Njc3NSwiZXhwIjoxOTU4OTcyNzc1fQ.QDuQm7rnpGUL2tU9VIC8XeTYiRIccnDc0ENhNCjb2dM';
 const supabaseClient = createClient(supabaseURL, supabaseAnonKey);
 
 export default function ChatPage() {
-  const username = 'antoni0o';
   const [background, setBackground] = useState('');
   const [message, setMessage] = useState('');
   const [messageList, setMessageList] = useState([]);
+  const router = useRouter();
+  const { username } = router.query;
 
   useEffect(() => {
     if (!background) {
@@ -30,6 +33,23 @@ export default function ChatPage() {
       .then(({data}) => {
         setMessageList(data);
       });
+
+      const subscription = supabaseClient
+          .from('messages')
+          .on('*', (res) => {
+            supabaseClient
+            .from('messages')
+            .select('*')
+            .order('id', {ascending: false})
+            .then(({data}) => {
+              setMessageList(data);
+            });
+          })
+          .subscribe();
+
+    return () => {
+      subscription.unsubscribe();
+    }
   }, []);
 
   const newMessageHandle = (newMessage) => {
@@ -44,10 +64,6 @@ export default function ChatPage() {
         message
       ])
       .then(({data}) => {
-        setMessageList([
-          data[0],
-          ...messageList
-        ]);
         setMessage('');
       })
   }
@@ -89,7 +105,7 @@ export default function ChatPage() {
           }}
         >
 
-          <MessageList messages={messageList} />
+          <MessageList messages={messageList} user={username}/>
 
           <Box
             as="form"
@@ -100,6 +116,9 @@ export default function ChatPage() {
               backgroundColor: appConfig.theme.colors.neutrals[800],
             }}
           >
+            <SendStickerButton onStickerClick={(sticker) => {
+              newMessageHandle(`:sticker: ${sticker}`);
+            }} />
             <TextField
               className='formBox'
               placeholder="Insira sua mensagem aqui..."
@@ -121,7 +140,6 @@ export default function ChatPage() {
               }}
               onKeyPress={(e) => {
                 if (e.key === 'Enter') {
-                  e.preventDefault();
                   if(message.length >= 1) {
                     newMessageHandle(message);
                   }
@@ -171,4 +189,3 @@ function Header() {
     </>
   )
 }
-

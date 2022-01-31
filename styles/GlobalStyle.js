@@ -28,24 +28,22 @@ export default function GlobalStyle() {
         border: 0px none #181f25;
       }
 
-      formBox
-
-      .formBox {
+      * {
         scrollbar-width: thin;
         scrollbar-color: #181f25 #52667a;
       }
 
-      .formBox::-webkit-scrollbar {
+      *::-webkit-scrollbar {
         width: 8px;
       }
 
-      .formBox::-webkit-scrollbar-track {
+      *::-webkit-scrollbar-track {
         background: #313D49;
         border-radius: 10px;
         margin: 4px 0;
       }
 
-      .formBox::-webkit-scrollbar-thumb {
+      *::-webkit-scrollbar-thumb {
         background-color: #212931;
         border-radius: 10px;
         border: 0px none #212931;

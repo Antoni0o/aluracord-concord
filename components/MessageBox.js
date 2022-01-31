@@ -11,7 +11,7 @@ const supabaseURL = 'https://cszipflqliivofbzdgjq.supabase.co';
 const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTY0MzM5Njc3NSwiZXhwIjoxOTU4OTcyNzc1fQ.QDuQm7rnpGUL2tU9VIC8XeTYiRIccnDc0ENhNCjb2dM';
 const supabaseClient = createClient(supabaseURL, supabaseAnonKey);
 
-export default function MessageBox({ message }) {
+export default function MessageBox({ message, username }) {
   const { ref, isComponentVisible, setIsComponentVisible } = useComponentVisibility(false);
   const [deleteButtonVisibility, setDeleteButtonVisibility] = useState(false);
 
@@ -100,7 +100,11 @@ export default function MessageBox({ message }) {
             backgroundColor: appConfig.theme.colors.neutrals[700],
           }
         }}
-        onMouseEnter={() => setDeleteButtonVisibility(true)}
+        onMouseEnter={() => {
+          if(username == message.sender) {
+            setDeleteButtonVisibility(true)
+          }
+        }}
         onMouseLeave={() => setDeleteButtonVisibility(false)}
       >
         <Box
@@ -156,21 +160,33 @@ export default function MessageBox({ message }) {
                 marginRight: '2%'
               }}
               onClick={(e) => {
-                e.preventDefault();
                 deleteMessageHandle(message.id)
               }}
             />
           }
         </Box>
-        <Text
-          className='messageText'
-          styleSheet={{
-            width: '700px',
-            wordBreak: 'break-all'
-          }}
-        >
-          {message.text}
-        </Text>
+          {
+            message.text.startsWith(':sticker:') 
+            ? (
+              <Image 
+              alt="sticker image"
+              styleSheet={{
+                maxWidth: '248px'
+              }}
+              src={message.text.replace(':sticker:', '')} />
+            )
+            : (
+              <Text
+                className='messageText'
+                styleSheet={{
+                  width: '700px',
+                  wordBreak: 'break-all'
+                }}
+              >
+                {message.text}
+              </Text>
+            )
+          }
       </Text>
     </div>
   );

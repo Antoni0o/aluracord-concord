@@ -4,7 +4,7 @@ import appConfig from '../config.json';
 import MessageBox from "./MessageBox";
 
 
-export default function MessageList({messages}) {
+export default function MessageList({messages, user}) {
   return (
       <Box
         tag="ul"
@@ -22,6 +22,7 @@ export default function MessageList({messages}) {
             <MessageBox
               key={message.id}
               message={message}
+              username={user}
             />
           )
         })

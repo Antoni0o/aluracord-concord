@@ -71,7 +71,7 @@ export default function HomePage() {
             onSubmit={(e) => {
               e.preventDefault();
               if(user.id) {
-                router.push('/chat');
+                router.push(`/chat?username=${username}`);
               }
             }}
           >
