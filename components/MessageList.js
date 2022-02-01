@@ -3,7 +3,6 @@ import { Box } from "@skynexui/components";
 import appConfig from '../config.json';
 import MessageBox from "./MessageBox";
 
-
 export default function MessageList({messages, user}) {
   return (
       <Box
@@ -26,7 +25,6 @@ export default function MessageList({messages, user}) {
             />
           )
         })
-
         }
       </Box>
   )
